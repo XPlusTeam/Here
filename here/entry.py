@@ -8,8 +8,8 @@ from here.position import Position
 
 class Config(Serializable):
 	highlight_time: int = 15
-	display_voxel_waypoint: bool = True
-	display_xaero_waypoint: bool = True
+	display_voxel_waypoint: bool = False
+	display_xaero_waypoint: bool = False
 	click_to_teleport: bool = False
 	use_rcon_if_possible: bool = True
 
@@ -44,9 +44,9 @@ def coordinate_text(x: float, y: float, z: float, dimension: Dimension):
 def __display(server: ServerInterface, name: str, position: Position, dimension_str: str):
 	x, y, z = position
 	dimension = get_dimension(dimension_str)
-
+	dim = dimension.get_reg_key()
 	# basic text: someone @ dimension [x, y, z]
-	texts = RTextList(RText(name, RColor.yellow), ' @ ', dimension.get_rtext(), ' ', coordinate_text(x, y, z, dimension))
+	texts = RTextList(RText('[x:{}, y:{}, z:{} , dim:{}]'.format(int(x), int(y), int(z), dim.strip('"'))))
 
 	# click event to add waypoint
 	if config.display_voxel_waypoint:
